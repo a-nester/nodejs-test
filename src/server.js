@@ -22,10 +22,24 @@ export const startServer = () => {
     })
   );
 
-  app.get("/", (req, res) => {
+  // app.use((req, res, next) => {
+  //   console.log(req.body);
+  //   next();
+  // });
+
+  function middlewareA(req, res) {
+    console.log("Hi!");
+  }
+
+  app.get("/", middlewareA, (req, res) => {
     res.json({
       message: "Hello world!",
     });
+  });
+
+  app.post("/", (req, res) => {
+    console.log(req.body);
+    res.json(req.body);
   });
 
   app.use("*", (req, res, next) => {
