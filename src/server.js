@@ -3,8 +3,7 @@ import pino from "pino-http";
 import cors from "cors";
 import dotenv from "dotenv";
 import { env } from "./utils/env.js";
-import { getAllStudents, getStudentById } from "./services/students.js";
-
+import studentsRouter from "./routers/students.js";
 dotenv.config();
 
 const PORT = Number(env("PORT", 3000));
@@ -39,29 +38,12 @@ export const startServer = () => {
   //   });
   // });
 
-  app.get("/students", async (req, res) => {
-    const students = await getAllStudents();
-    res.status(200).json({ data: students });
-  });
-
-  app.get("/students/:studentId", async (req, res) => {
-    const { studentId } = req.params;
-    const student = await getStudentById(studentId);
-    // response if contact not found
-    if (!student) {
-      res.status(404).json({
-        message: "Student not found",
-      });
-      return;
-    }
-    //response if contact found
-    res.status(200).json({ data: student });
-  });
-
   app.post("/", (req, res) => {
     console.log(req.body);
     res.json(req.body);
   });
+
+  app.use(studentsRouter);
 
   app.use("*", (req, res, next) => {
     res.status(404).json({
