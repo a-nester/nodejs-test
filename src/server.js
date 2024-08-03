@@ -24,9 +24,9 @@ export const startServer = () => {
     })
   );
 
-  app.post("/", (req, res) => {
-    res.json(req.body);
-  });
+  // app.post("/", (req, res) => {
+  //   res.json(req.body);
+  // });
 
   app.use(studentsRouter);
 
