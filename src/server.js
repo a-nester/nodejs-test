@@ -28,7 +28,7 @@ export const startServer = () => {
   //   res.json(req.body);
   // });
 
-  app.use(studentsRouter);
+  app.use("/students", studentsRouter);
 
   app.use("*", notFoundHandler);
   app.use(errorHandler);
