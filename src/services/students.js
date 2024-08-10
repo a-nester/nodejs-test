@@ -5,8 +5,16 @@ export const getAllStudents = async () => {
   return students;
 };
 
-export const getStudentById = (studentId) =>
-  StudentsCollection.findById(studentId);
+export const getStudentById = async (studentId) => {
+  try {
+    const student = await StudentsCollection.findById(studentId);
+    console.log("!!! Stud !!!", student);
+
+    return student;
+  } catch (error) {
+    return null;
+  }
+};
 
 export const createStudent = async (payload) => {
   // const { name, email, age, gender, avgMark, onDuty } = payload;

@@ -19,14 +19,13 @@ export const getStudentsController = async (req, res, next) => {
 export const getStudentsByIdController = async (req, res, next) => {
   const { studentId } = req.params;
   const student = await getStudentById(studentId);
+  // response if contact not found
   if (student === null) {
+    // return next(new Error("Student not found"));
     // return next(createHttpError(404, "Student not found"));
     // return next(createHttpError[404]("Student not found"));
     return next(createHttpError.NotFound("Student not found"));
   }
-  // response if contact not found
-  // next(new Error("Student not found"));
-  // return;
   //response if contact found
   res.send({
     status: 200,
