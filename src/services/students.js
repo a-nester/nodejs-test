@@ -1,16 +1,44 @@
+import { SORT_ORDER } from "../constants/index.js";
 import { StudentsCollection } from "../db/models/student.js";
 import { calculatePaginationData } from "../utils/calculatePaginationData.js";
 
-export const getAllStudents = async ({ page, perPage }) => {
+export const getAllStudents = async ({
+  page = 1,
+  perPage = 10,
+  sortBy = "_id",
+  sortOrder = SORT_ORDER.ASC,
+  filter = {},
+}) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
   const studentsQuery = StudentsCollection.find();
-  const studentsCount = await StudentsCollection.find()
-    .merge(studentsQuery)
-    .countDocuments();
 
-  const students = await studentsQuery.skip(skip).limit(limit).exec();
+  if (filter.gender) {
+    studentsQuery.where("gender").equals(filter.gender);
+  }
+  if (filter.maxAge) {
+    studentsQuery.where("maxAge").lte(filter.maxAge);
+  }
+  if (filter.minAge) {
+    studentsQuery.where("minAge").gte(filter.minAge);
+  }
+  if (filter.maxAvgMark) {
+    studentsQuery.where("maxAvgMark").lte(filter.maxAvgMark);
+  }
+  if (filter.minAvgMark) {
+    studentsQuery.where("minAvgMark").gte(filter.minAvgMark);
+  }
+
+  const [studentsCount, students] = await Promise.all([
+    StudentsCollection.find().merge(studentsQuery).countDocuments(),
+
+    studentsQuery
+      .skip(skip)
+      .limit(limit)
+      .sort({ [sortBy]: sortOrder })
+      .exec(),
+  ]);
 
   const paginationData = calculatePaginationData(studentsCount, perPage, page);
 
@@ -32,7 +60,6 @@ export const getStudentById = async (studentId) => {
 };
 
 export const createStudent = async (payload) => {
-  // const { name, email, age, gender, avgMark, onDuty } = payload;
   const student = await StudentsCollection.create(payload);
   return student;
 };
