@@ -3,7 +3,7 @@ import pino from "pino-http";
 import cors from "cors";
 import dotenv from "dotenv";
 import { env } from "./utils/env.js";
-import studentsRouter from "./routers/students.js";
+import router from "./routers/index.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { notFoundHandler } from "./middlewares/notFoundHandler.js";
 dotenv.config();
@@ -28,7 +28,7 @@ export const startServer = () => {
   //   res.json(req.body);
   // });
 
-  app.use("/students", studentsRouter);
+  app.use("/", router);
 
   app.use("*", notFoundHandler);
   app.use(errorHandler);
