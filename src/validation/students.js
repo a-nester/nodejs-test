@@ -8,10 +8,11 @@ export const createStudentSchema = Joi.object({
     "any.required": "Username is required",
   }),
   email: Joi.string().email().required(),
-  age: Joi.number().integer().min(6).max(16).required(),
+  age: Joi.number().integer().min(6).max(18).required(),
   gender: Joi.string().valid("male", "femail", "other").required(),
   avgMark: Joi.number().min(2).max(12).required(),
   onDuty: Joi.boolean(),
+  parentId: Joi.string().required(),
 });
 
 export const updateStudencSchema = Joi.object({

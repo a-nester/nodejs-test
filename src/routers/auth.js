@@ -18,8 +18,9 @@ router.post(
 );
 
 router.post(
-  "/lofgin",
-  validateBody(loginUserSchema, ctrlWrapper(loginUserController))
+  "/login",
+  validateBody(loginUserSchema),
+  ctrlWrapper(loginUserController)
 );
 
 router.post("/logout", ctrlWrapper(logoutUserController));
